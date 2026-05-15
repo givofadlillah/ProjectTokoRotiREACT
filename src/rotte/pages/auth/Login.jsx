@@ -1,334 +1,591 @@
 import axios from "axios";
 import { useState } from "react";
-import { AlertCircle, Loader2, Eye, EyeOff, Lock, User } from "lucide-react";
+import {
+  AlertCircle,
+  Loader2,
+  Eye,
+  EyeOff,
+  Lock,
+  User,
+  Croissant,
+  ArrowRight,
+} from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import { mockLogin } from "../../utils/mockAuth";
 
-// Rotte Bakery Color Scheme
-const BROWN = "#8B5E2A";
-const BROWN_DARK = "#5C3D1E";
-const BROWN_LIGHT = "#C17C2E";
-const CREAM = "#FDF6ED";
-const WARM_WHITE = "#FFFBF5";
+const theme = {
+  dark: "#2B1808",
+  brown: "#7A4A20",
+  gold: "#C17C2E",
+  cream: "#FFF7EA",
+  white: "#FFFCF7",
+  border: "#EAD6B8",
+  text: "#2C1810",
+  muted: "#9B7552",
+};
 
 export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [dataForm, setDataForm] = useState({ 
-    username: "emilys", 
-    password: "emilyspass" 
+  const [dataForm, setDataForm] = useState({
+    username: "emilys",
+    password: "emilyspass",
   });
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setDataForm({ ...dataForm, [name]: value });
+  const handleChange = (e) => {
+    setDataForm({ ...dataForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!dataForm.username || !dataForm.password) {
-      setError("Username dan password wajib diisi");
-      return;
-    }
-    setLoading(true);
-    setError("");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!dataForm.username || !dataForm.password) {
+    setError("Username dan password wajib diisi");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const res = await mockLogin(dataForm.username, dataForm.password);
+
+    const token = res.accessToken || res.token;
     
-    axios
-      .post("https://dummyjson.com/auth/login", {
-        username: dataForm.username,
-        password: dataForm.password,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
-          navigate("/");
-        }
-      })
-      .catch(() => setError("Username atau password salah"))
-      .finally(() => setLoading(false));
+    if (token) {
+      localStorage.setItem("token", token);
+      navigate("/", { replace: true });
+    } else {
+      setError("Token tidak ditemukan dalam response");
+    }
+  } catch (err) {
+    console.error("Login error:", err.message);
+    setError(err.message || "Terjadi kesalahan saat login");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const inputBase = {
+    width: "100%",
+    height: 52,
+    borderRadius: 16,
+    border: `1px solid ${theme.border}`,
+    background: "#FFF9F0",
+    padding: "0 48px",
+    color: theme.text,
+    fontSize: 14,
+    outline: "none",
+    boxSizing: "border-box",
+    transition: "0.25s ease",
+    fontFamily: "inherit",
+  };
+
+  const labelStyle = {
+    display: "block",
+    marginBottom: 9,
+    color: theme.text,
+    fontSize: 13,
+    fontWeight: 800,
+  };
+
+  const leftIcon = {
+    position: "absolute",
+    left: 16,
+    top: "50%",
+    transform: "translateY(-50%)",
+    color: theme.muted,
+  };
+
+  const handleFocus = (e) => {
+    e.target.style.background = "#FFFFFF";
+    e.target.style.borderColor = theme.gold;
+    e.target.style.boxShadow = "0 0 0 4px rgba(193,124,46,0.13)";
+  };
+
+  const handleBlur = (e) => {
+    e.target.style.background = "#FFF9F0";
+    e.target.style.borderColor = theme.border;
+    e.target.style.boxShadow = "none";
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${BROWN_DARK} 0%, ${BROWN} 50%, ${BROWN_LIGHT} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", position: "relative", overflow: "hidden" }}>
-      
-      {/* Decorative circles */}
-      <div style={{ position: "absolute", top: "-100px", right: "-100px", width: "300px", height: "300px", borderRadius: "50%", background: "rgba(193,124,46,0.15)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-80px", left: "-80px", width: "250px", height: "250px", borderRadius: "50%", background: "rgba(193,124,46,0.1)", pointerEvents: "none" }} />
+    <div
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #FFF7EA 0%, #F3D8AE 48%, #D69B55 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        fontFamily: "Inter, Barlow, system-ui, sans-serif",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div className="shape shape-one" />
+      <div className="shape shape-two" />
 
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "420px" }}>
-        {/* Card */}
-        <div style={{ background: WARM_WHITE, borderRadius: "28px", padding: "44px 40px", boxShadow: "0 32px 80px rgba(0,0,0,0.3)" }}>
-          {/* Brand */}
-          <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <div style={{
-              width: 64,
-              height: 64,
-              borderRadius: 20,
-              background: `linear-gradient(135deg, ${BROWN_LIGHT} 0%, ${BROWN_DARK} 100%)`,
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 1080,
+          minHeight: 620,
+          background: "rgba(255,252,247,0.78)",
+          border: "1px solid rgba(255,255,255,0.7)",
+          borderRadius: 38,
+          display: "grid",
+          gridTemplateColumns: "1.05fr 0.95fr",
+          overflow: "hidden",
+          boxShadow: "0 35px 90px rgba(77,43,12,0.24)",
+          backdropFilter: "blur(18px)",
+          position: "relative",
+          zIndex: 2,
+        }}
+        className="login-wrapper"
+      >
+        <section
+          style={{
+            padding: 54,
+            background:
+              "linear-gradient(145deg, #2B1808 0%, #623917 55%, #A8682A 100%)",
+            color: "#fff",
+            position: "relative",
+            overflow: "hidden",
+          }}
+          className="brand-panel"
+        >
+          <div
+            style={{
+              position: "absolute",
+              right: -70,
+              bottom: -90,
+              fontSize: 230,
+              opacity: 0.09,
+              transform: "rotate(-12deg)",
+            }}
+          >
+            🥐
+          </div>
+
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 18,
+              background: "rgba(255,255,255,0.14)",
+              border: "1px solid rgba(255,255,255,0.18)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 24px",
-              fontSize: 28,
-              boxShadow: `0 8px 24px rgba(193,124,46,0.4)`
-            }}>
-              🥐
-            </div>
-            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#2C1810", letterSpacing: "-0.5px" }}>
-              Selamat Datang Kembali
-            </h2>
-            <p style={{ margin: "6px 0 0", fontSize: 13, color: "#A07850" }}>
-              Masuk ke dashboard Rotte Bakery CRM
+              marginBottom: 36,
+            }}
+          >
+            <Croissant size={31} />
+          </div>
+
+          <div style={{ position: "relative", zIndex: 2 }}>
+            <p
+              style={{
+                margin: "0 0 14px",
+                color: "#F0C878",
+                fontSize: 13,
+                fontWeight: 900,
+                letterSpacing: 2.2,
+              }}
+            >
+              ROTTE BAKERY CRM
+            </p>
+
+            <h1
+              style={{
+                margin: 0,
+                fontSize: 48,
+                lineHeight: 1.05,
+                letterSpacing: "-1.7px",
+                maxWidth: 480,
+              }}
+            >
+              Fresh bread, clean data, better service.
+            </h1>
+
+            <p
+              style={{
+                marginTop: 22,
+                color: "rgba(255,255,255,0.72)",
+                fontSize: 15,
+                lineHeight: 1.8,
+                maxWidth: 420,
+              }}
+            >
+              Dashboard profesional untuk mengelola pesanan, pelanggan,
+              promosi, loyalty, dan laporan penjualan Rotte Bakery.
             </p>
           </div>
 
-          {/* Error Alert */}
+          <div
+            style={{
+              position: "absolute",
+              left: 54,
+              right: 54,
+              bottom: 46,
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 14,
+              zIndex: 2,
+            }}
+            className="stats"
+          >
+            {[
+              ["24/7", "Monitoring"],
+              ["CRM", "Management"],
+              ["Secure", "Access"],
+            ].map(([top, bottom]) => (
+              <div
+                key={top}
+                style={{
+                  background: "rgba(255,255,255,0.11)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  borderRadius: 18,
+                  padding: 16,
+                }}
+              >
+                <div style={{ fontSize: 20, fontWeight: 900 }}>{top}</div>
+                <div
+                  style={{
+                    marginTop: 4,
+                    fontSize: 11,
+                    color: "rgba(255,255,255,0.62)",
+                  }}
+                >
+                  {bottom}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          style={{
+            padding: "54px 48px",
+            background: theme.white,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ marginBottom: 32 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "8px 12px",
+                borderRadius: 999,
+                background: theme.cream,
+                border: `1px solid ${theme.border}`,
+                color: theme.brown,
+                fontSize: 12,
+                fontWeight: 900,
+                marginBottom: 18,
+              }}
+            >
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  background: theme.gold,
+                }}
+              />
+              Admin Login
+            </div>
+
+            <h2
+              style={{
+                margin: 0,
+                color: theme.text,
+                fontSize: 34,
+                fontWeight: 950,
+                letterSpacing: "-1px",
+              }}
+            >
+              Selamat Datang
+            </h2>
+
+            <p
+              style={{
+                margin: "10px 0 0",
+                color: theme.muted,
+                fontSize: 14,
+                lineHeight: 1.7,
+              }}
+            >
+              Masuk ke akun admin untuk melanjutkan ke dashboard Rotte Bakery.
+            </p>
+          </div>
+
           {error && (
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              background: "rgba(138,58,58,0.1)",
-              border: `1.5px solid #8A3A3A`,
-              borderRadius: 14,
-              padding: "12px 16px",
-              marginBottom: 18,
-              fontSize: 13,
-              color: "#8A3A3A"
-            }}>
-              <AlertCircle size={16} style={{ flexShrink: 0 }} />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "14px 16px",
+                borderRadius: 16,
+                background: "#FFF1F1",
+                border: "1px solid #E9A5A5",
+                color: "#9B2C2C",
+                fontSize: 13,
+                fontWeight: 800,
+                marginBottom: 20,
+              }}
+            >
+              <AlertCircle size={18} />
               <span>{error}</span>
             </div>
           )}
 
-          {/* Loading Alert */}
-          {loading && (
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              background: "rgba(193,124,46,0.08)",
-              borderRadius: 14,
-              padding: "12px 16px",
-              marginBottom: 18,
-              fontSize: 13,
-              color: "#6B4C35"
-            }}>
-              <Loader2 size={16} style={{ flexShrink: 0, animation: "spin 1s linear infinite" }} />
-              <span>Mohon tunggu...</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-            {/* Username Field */}
+          <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: 18 }}>
-              <label style={{ fontSize: 12.5, fontWeight: 600, color: "#6B4C35", display: "block", marginBottom: 8 }}>
-                Username
-              </label>
+              <label style={labelStyle}>Username</label>
+
               <div style={{ position: "relative" }}>
-                <User size={15} style={{
-                  position: "absolute",
-                  left: 14,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "#A07850",
-                  flexShrink: 0
-                }} />
+                <User size={18} style={leftIcon} />
+
                 <input
                   type="text"
                   name="username"
                   value={dataForm.username}
                   onChange={handleChange}
                   placeholder="Masukkan username"
-                  style={{
-                    width: "100%",
-                    paddingLeft: 42,
-                    paddingRight: 16,
-                    paddingTop: 12,
-                    paddingBottom: 12,
-                    border: "1.5px solid #EDD9B8",
-                    borderRadius: 14,
-                    fontSize: 13.5,
-                    outline: "none",
-                    boxSizing: "border-box",
-                    transition: "all 0.2s",
-                    background: "#FDF6ED",
-                    color: "#2C1810",
-                    fontFamily: "inherit"
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = BROWN_LIGHT;
-                    e.target.style.boxShadow = `0 0 0 3px rgba(193,124,46,0.1)`;
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#EDD9B8";
-                    e.target.style.boxShadow = "none";
-                  }}
+                  style={inputBase}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 />
               </div>
             </div>
 
-            {/* Password Field */}
-            <div style={{ marginBottom: 18 }}>
-              <label style={{ fontSize: 12.5, fontWeight: 600, color: "#6B4C35", display: "block", marginBottom: 8 }}>
-                Password
-              </label>
+            <div style={{ marginBottom: 14 }}>
+              <label style={labelStyle}>Password</label>
+
               <div style={{ position: "relative" }}>
-                <Lock size={15} style={{
-                  position: "absolute",
-                  left: 14,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "#A07850",
-                  flexShrink: 0
-                }} />
+                <Lock size={18} style={leftIcon} />
+
                 <input
                   type={showPass ? "text" : "password"}
                   name="password"
                   value={dataForm.password}
                   onChange={handleChange}
                   placeholder="Masukkan password"
-                  style={{
-                    width: "100%",
-                    paddingLeft: 42,
-                    paddingRight: 42,
-                    paddingTop: 12,
-                    paddingBottom: 12,
-                    border: "1.5px solid #EDD9B8",
-                    borderRadius: 14,
-                    fontSize: 13.5,
-                    outline: "none",
-                    boxSizing: "border-box",
-                    transition: "all 0.2s",
-                    background: "#FDF6ED",
-                    color: "#2C1810",
-                    fontFamily: "inherit"
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = BROWN_LIGHT;
-                    e.target.style.boxShadow = `0 0 0 3px rgba(193,124,46,0.1)`;
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "#EDD9B8";
-                    e.target.style.boxShadow = "none";
-                  }}
+                  style={inputBase}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
                   style={{
                     position: "absolute",
-                    right: 14,
+                    right: 16,
                     top: "50%",
                     transform: "translateY(-50%)",
-                    background: "none",
                     border: "none",
+                    background: "transparent",
                     cursor: "pointer",
-                    color: "#A07850",
+                    color: theme.muted,
                     display: "flex",
                     padding: 0,
-                    transition: "color 0.2s"
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = BROWN; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#A07850"; }}
                 >
-                  {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            {/* Forgot Password Link */}
-            <div style={{ textAlign: "right", marginBottom: 20 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 26,
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 9,
+                  color: theme.muted,
+                  fontSize: 13,
+                  cursor: "pointer",
+                }}
+              >
+                <input type="checkbox" />
+                Ingat saya
+              </label>
+
               <Link
                 to="/auth/forgot"
                 style={{
-                  fontSize: 12.5,
-                  color: BROWN_LIGHT,
-                  fontWeight: 600,
+                  color: theme.brown,
+                  fontSize: 13,
+                  fontWeight: 900,
                   textDecoration: "none",
-                  cursor: "pointer",
-                  transition: "color 0.2s"
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = BROWN_DARK; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = BROWN_LIGHT; }}
               >
                 Lupa password?
               </Link>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
               style={{
                 width: "100%",
-                background: loading
-                  ? "#D4A96A"
-                  : `linear-gradient(135deg, ${BROWN_LIGHT} 0%, ${BROWN_DARK} 100%)`,
-                color: "#fff",
+                height: 54,
                 border: "none",
-                borderRadius: 14,
-                padding: 14,
+                borderRadius: 17,
+                background: loading
+                  ? "#D8B17A"
+                  : `linear-gradient(135deg, ${theme.gold}, ${theme.brown}, ${theme.dark})`,
+                color: "#fff",
                 fontSize: 15,
-                fontWeight: 700,
+                fontWeight: 950,
                 cursor: loading ? "not-allowed" : "pointer",
-                transition: "all 0.25s",
-                boxShadow: loading ? "none" : `0 4px 16px rgba(193,124,46,0.35)`,
+                boxShadow: loading
+                  ? "none"
+                  : "0 16px 30px rgba(122,74,32,0.28)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 8,
-                fontFamily: "inherit"
+                gap: 10,
+                transition: "0.25s ease",
+                fontFamily: "inherit",
               }}
               onMouseEnter={(e) => {
                 if (!loading) {
                   e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = `0 8px 24px rgba(193,124,46,0.45)`;
+                  e.currentTarget.style.boxShadow =
+                    "0 20px 36px rgba(122,74,32,0.34)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (!loading) {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = `0 4px 16px rgba(193,124,46,0.35)`;
+                  e.currentTarget.style.boxShadow =
+                    "0 16px 30px rgba(122,74,32,0.28)";
                 }
               }}
             >
-              Masuk
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="spin" />
+                  Memproses...
+                </>
+              ) : (
+                <>
+                  Masuk ke Dashboard
+                  <ArrowRight size={18} />
+                </>
+              )}
             </button>
           </form>
 
-          {/* Sign Up Link */}
-          <div style={{ textAlign: "center", fontSize: 13, color: "#A07850" }}>
+          <div
+            style={{
+              marginTop: 28,
+              paddingTop: 24,
+              borderTop: `1px solid ${theme.border}`,
+              textAlign: "center",
+              color: theme.muted,
+              fontSize: 13,
+            }}
+          >
             Belum punya akun?{" "}
             <Link
               to="/auth/register"
               style={{
-                color: BROWN_LIGHT,
-                fontWeight: 700,
+                color: theme.brown,
+                fontWeight: 950,
                 textDecoration: "none",
-                cursor: "pointer",
-                transition: "color 0.2s"
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = BROWN_DARK; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = BROWN_LIGHT; }}
             >
               Daftar sekarang
             </Link>
           </div>
-        </div>
-
-        {/* Copyright */}
-        <div style={{ textAlign: "center", marginTop: 24, fontSize: 11.5, color: "rgba(255,255,255,0.3)" }}>
-          © 2025 Rotte Bakery CRM. All rights reserved.
-        </div>
+        </section>
       </div>
 
       <style>{`
+        .shape {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(1px);
+          pointer-events: none;
+        }
+
+        .shape-one {
+          width: 360px;
+          height: 360px;
+          background: rgba(255, 255, 255, 0.35);
+          top: -120px;
+          right: -80px;
+        }
+
+        .shape-two {
+          width: 260px;
+          height: 260px;
+          background: rgba(122, 74, 32, 0.16);
+          bottom: -90px;
+          left: -60px;
+        }
+
+        .spin {
+          animation: spin 1s linear infinite;
+        }
+
         @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        input::placeholder {
+          color: #B69573;
+        }
+
+        input[type="checkbox"] {
+          accent-color: #8B5E2A;
+        }
+
+        @media (max-width: 920px) {
+          .login-wrapper {
+            grid-template-columns: 1fr !important;
+            max-width: 480px !important;
+            min-height: auto !important;
+          }
+
+          .brand-panel {
+            display: none !important;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .login-wrapper {
+            border-radius: 26px !important;
+          }
+
+          section {
+            padding: 36px 24px !important;
+          }
         }
       `}</style>
     </div>

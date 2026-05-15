@@ -10,6 +10,8 @@ import Loading from "./components/loading";
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Orders    = lazy(() => import("./pages/orders"));
 const Customers = lazy(() => import("./pages/customer"));
+const Products  = lazy(() => import("./pages/Products"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const Loyalty   = lazy(() => import("./pages/loyalty"));
 const Promos    = lazy(() => import("./pages/promos"));
 const Reports   = lazy(() => import("./pages/reports"));
@@ -31,6 +33,8 @@ export default function App() {
                     <Route path="/"          element={<Dashboard />} />
                     <Route path="/orders"    element={<Orders />} />
                     <Route path="/customers" element={<Customers />} />
+                    <Route path="/products"  element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetail />} />
                     <Route path="/loyalty"   element={<Loyalty />} />
                     <Route path="/promos"    element={<Promos />} />
                     <Route path="/reports"   element={<Reports />} />
