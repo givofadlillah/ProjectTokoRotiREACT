@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBoxOpen, FaSearch } from "react-icons/fa";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 import { products } from "../data/products";
 
 const MAROON = "#7B1C1C";

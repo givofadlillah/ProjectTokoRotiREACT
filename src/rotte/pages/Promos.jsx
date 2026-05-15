@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaPlus, FaTimes, FaTag, FaTruck, FaBoxOpen, FaFire, FaCalendarAlt, FaToggleOn, FaToggleOff } from "react-icons/fa";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 
 const MAROON = "#7B1C1C";
 const MAROON_DARK = "#5A1313";

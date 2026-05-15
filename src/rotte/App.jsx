@@ -4,17 +4,17 @@ import { Suspense, lazy } from "react";
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
-import Loading from "./components/loading";
+import Loading from "./components/Loading";
 
 // Pages — path relatif ke file yang pasti ada
-const Dashboard = lazy(() => import("./pages/dashboard"));
-const Orders    = lazy(() => import("./pages/orders"));
-const Customers = lazy(() => import("./pages/customer"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Orders    = lazy(() => import("./pages/Orders"));
+const Customers = lazy(() => import("./pages/Customer"));
 const Products  = lazy(() => import("./pages/Products"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
-const Loyalty   = lazy(() => import("./pages/loyalty"));
-const Promos    = lazy(() => import("./pages/promos"));
-const Reports   = lazy(() => import("./pages/reports"));
+const Loyalty   = lazy(() => import("./pages/Loyalty"));
+const Promos    = lazy(() => import("./pages/Promos"));
+const Reports   = lazy(() => import("./pages/Reports"));
 
 // Auth Pages
 const Login    = lazy(() => import("./pages/auth/Login"));

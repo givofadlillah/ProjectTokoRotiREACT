@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FaStar, FaMedal, FaTrophy, FaCrown } from "react-icons/fa";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 import customers from "../data/customers";
 
 const MAROON = "#7B1C1C";

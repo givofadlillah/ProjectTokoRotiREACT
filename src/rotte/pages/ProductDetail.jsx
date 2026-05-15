@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { products } from "../data/products";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 import { FaArrowLeft } from "react-icons/fa";
 
 const MAROON = "#7B1C1C";

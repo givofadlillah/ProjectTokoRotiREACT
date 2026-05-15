@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FaChartBar, FaUsers, FaExclamationTriangle, FaArrowUp, FaDownload } from "react-icons/fa";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 import customers from "../data/customers";
 import orders from "../data/orders";
 

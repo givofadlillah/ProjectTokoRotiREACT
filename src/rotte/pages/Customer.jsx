@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaUserPlus, FaSearch, FaFilter, FaTimes, FaUser } from "react-icons/fa";
-import PageHeader from "../components/pageheader";
+import PageHeader from "../components/PageHeader";
 import customersData from "../data/customers";
 
 const MAROON = "#7B1C1C";
