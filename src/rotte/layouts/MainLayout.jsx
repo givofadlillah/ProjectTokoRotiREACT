@@ -13,6 +13,7 @@ import {
   Bell,
   User,
   Croissant,
+  Layers,
 } from "lucide-react";
 
 const BROWN_DARK = "#3D2509";
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { path: "/loyalty", icon: Star, label: "Loyalty" },
   { path: "/promos", icon: Tag, label: "Promos" },
   { path: "/reports", icon: BarChart3, label: "Reports" },
+  { path: "/components", icon: Layers, label: "Components" },
 ];
 
 export default function MainLayout() {

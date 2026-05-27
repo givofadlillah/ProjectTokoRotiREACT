@@ -8,7 +8,7 @@ import './App.css';
 // ==========================================
 import MainLayout from './rotte/layouts/MainLayout';
 import AuthLayout from './rotte/layouts/AuthLayout';
-import Dashboard from './rotte/pages/Dashboard'; // Sesuaikan huruf besar/kecil dengan nama file asli Anda
+import Dashboard from './rotte/pages/Dashboard';
 import Orders from './rotte/pages/Orders';
 import Customers from './rotte/pages/Customers';
 import Products from './rotte/pages/Products';
@@ -16,6 +16,7 @@ import ProductDetail from './rotte/pages/ProductDetail';
 import Loyalty from './rotte/pages/Loyalty';
 import Promos from './rotte/pages/Promos';
 import Reports from './rotte/pages/Reports';
+import ComponentsPage from './rotte/pages/Components';
 import Login from './rotte/pages/auth/Login';
 import Register from './rotte/pages/auth/Register';
 import Forgot from './rotte/pages/auth/Forgot';
@@ -53,6 +54,7 @@ function App() {
         <Route path="loyalty" element={<Loyalty />} />
         <Route path="promos" element={<Promos />} />
         <Route path="reports" element={<Reports />} />
+        <Route path="components" element={<ComponentsPage />} />
       </Route>
 
       <Route path="/auth" element={<AuthLayout />}>
