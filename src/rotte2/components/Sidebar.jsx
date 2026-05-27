@@ -25,12 +25,12 @@ const Sidebar = () => {
       {/* Logo Area */}
       <div className="h-20 flex items-center px-8 border-b border-gray-50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#4C35DE] rounded-lg flex items-center justify-center text-white font-bold">
+          <div className="w-8 h-8 bg-[#7B1C1C] rounded-lg flex items-center justify-center text-white font-bold">
             R
           </div>
           <div>
-            <h1 className="text-[#4C35DE] font-bold text-xl leading-none tracking-tight">ROTTE 2</h1>
-            <span className="text-[10px] text-[#4C35DE] font-semibold tracking-wider">DASHBOARD</span>
+            <h1 className="text-[#7B1C1C] font-bold text-xl leading-none tracking-tight">ROTTE 2</h1>
+            <span className="text-[10px] text-[#7B1C1C] font-semibold tracking-wider">DASHBOARD</span>
           </div>
         </div>
       </div>
@@ -47,16 +47,16 @@ const Sidebar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-4 px-8 py-3 text-sm font-medium transition-colors relative ${
                     isActive
-                      ? 'text-[#4C35DE]' 
-                      : 'text-[#9AA2B1] hover:text-[#4C35DE] hover:bg-gray-50'
+                      ? 'text-[#7B1C1C]' 
+                      : 'text-[#9AA2B1] hover:text-[#7B1C1C] hover:bg-red-50'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    {/* Indikator garis biru di kanan */}
+                    {/* Indikator garis merah di kanan */}
                     {isActive && (
-                      <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#3B82F6] rounded-l-full"></div>
+                      <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#7B1C1C] rounded-l-full"></div>
                     )}
                     {item.icon}
                     {item.name}
@@ -70,7 +70,7 @@ const Sidebar = () => {
 
       {/* Settings at Bottom */}
       <div className="p-6">
-        <a href="#settings" className="flex items-center gap-4 px-2 text-sm font-medium text-[#9AA2B1] hover:text-[#4C35DE]">
+        <a href="#settings" className="flex items-center gap-4 px-2 text-sm font-medium text-[#9AA2B1] hover:text-[#7B1C1C]">
           <Settings size={20} />
           Settings
         </a>
